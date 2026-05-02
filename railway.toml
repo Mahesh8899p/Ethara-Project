@@ -2,9 +2,10 @@
   builder = "NIXPACKS"
 
 [build.nixpacks]
-  install_cmd = "cd backend && npm install && cd ../frontend && npm install && cd ../frontend && npm run build"
+  install_cmd = "npm install --prefix backend && npm install --prefix frontend"
+  build_cmd = "cd frontend && CI=false npm run build"
 
 [deploy]
-  startCommand = "cd backend && npm start"
+  startCommand = "node backend/src/app.js"
   restartPolicyType = "ON_FAILURE"
   restartPolicyMaxRetries = 10

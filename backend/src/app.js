@@ -12,7 +12,15 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: function(origin, callback) {
+    // Allow requests with no origin (mobile apps, curl)
+    if (!origin) return callback(null, true);
+    // Allow localhost and Railway domains
+    if (origin.includes('localhost') || origin.includes('railway.app') || origin === process.env.FRONTEND_URL) {
+      return callback(null, true);
+    }
+    callback(null, true); // Allow all in production for now
+  },
   credentials: true
 }));
 app.use(express.json());
